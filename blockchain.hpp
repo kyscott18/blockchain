@@ -19,7 +19,9 @@ class block;
 
 class entry {
 public:
-    entry() : from(0), to(1), amount(12), time(1) {}
+    entry() : from(0), to(1), amount(12), time(1) {
+        cout << "Creating genesis block" << endl;
+    }
     
     entry(int from, int to, int amount, int time) : from(from), to(to), amount(amount), time(time) {}
     
@@ -56,20 +58,17 @@ class block {
 public:
     block(entry in, hashpoint prev) : data(in), prev(hashpoint(prev.ptr)) {}
     
-    block() : data(entry()), prev(hashpoint()) {
-        cout << "Genesis Block Created" << endl;
-    }
+    block() : data(entry()), prev(hashpoint()) {}
     
-    //TODO: make this a function of the type of data, block.data.hash
     //has data and a hashpointer to the previous block
     entry data;
     hashpoint prev;
 };
 
-class blockchain {
+class Blockchain {
 public:
     
-    blockchain() {
+    Blockchain() {
         hashpoint next = hashpoint(new block());
         end = next;
         //create a genesis block that contains no data
@@ -106,7 +105,8 @@ public:
     
 };
 
-hashpoint::hashpoint(block* block_ptr) {
+//This function is being defined multiple times so it must be inlined 
+inline hashpoint::hashpoint(block* block_ptr) {
     ptr = block_ptr;
     if (block_ptr == nullptr) hash = 0;
     else hash = ptr->data.hash();
