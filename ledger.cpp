@@ -7,22 +7,42 @@
 //
 
 #include "ledger.hpp"
+#include <unordered_map>
 
+#include <stdio.h>
 
-int main(int argc, char** argv) {
-    Ledger ledger;
-    //initialize users
-    ledger.create(0);
-    ledger.create(1);
-    ledger.create(1);
-    ledger.create(109);
-    //deposit money into users accounts
-    ledger.deposit(1, 10);
-    ledger.deposit(109, 20);
-    //transfer money between users
-    ledger.transfer(1, 109, 3);
-    //withdrawal money from users accounts
-    ledger.withdrawal(109, 7);
-    //print the remaining balances
-    ledger.print(); 
+void Ledger::add_block(int from, int to, int amount) {
+    entry in(from, to, amount, time);
+    ++time;
+    blockchain.add_node(in);
+    
+    //Update the balance sheet
+    balances[from] -= amount;
+    balances[to] += amount;
+}
+
+void Ledger::transfer(int from, int to, int amount) {
+    add_block(from, to, amount);
+}
+    
+void Ledger::deposit(int to, int amount) {
+    add_block(0, to, amount);
+}
+    
+void Ledger::withdrawal(int from, int amount) {
+    add_block(from, 0, amount);
+}
+    
+void Ledger::create(int num) {
+    //if num is taken, print error and return
+    auto hold = balances.find(num);
+    if (hold != balances.end())
+        cout << "num already in use" << endl;
+    else balances[num] = 0;
+}
+    
+void Ledger::print() {
+    for (auto x:balances) {
+        cout << x.first << " " << x.second << endl;
+    }
 }
