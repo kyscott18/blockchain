@@ -17,11 +17,11 @@
 using namespace std;
 class block;
 
-class entry {
+class transaction {
 public:
-    entry();
+    transaction();
     
-    entry(int from, int to, int amount, int time);
+    transaction(int from, int to, int amount, int time);
     
     int hash();
     
@@ -32,6 +32,21 @@ private:
     int to;
     int amount;
     int time;
+};
+
+class sc {
+public:
+    sc();
+    sc(int from, int to, int amount, int time, int condition);
+    int hash();
+    void print();
+    
+private:
+    int from;
+    int to;
+    int amount;
+    int time;
+    int condition;
 };
 
 class hashpoint {
@@ -47,12 +62,14 @@ public:
 
 class block {
 public:
-    block(entry in, hashpoint prev);
+    block(transaction in, hashpoint prev);
+    
+    block(sc in, hashpoint prev);
     
     block();
     
     //has data and a hashpointer to the previous block
-    entry data;
+    transaction t;
     hashpoint prev;
 };
 
@@ -63,9 +80,15 @@ public:
     
     hashpoint end;
     
-    void add_node(entry in);
+    void add_node(transaction in);
+    
+    void add_node(sc in);
     
     void validate();
     
     void print();
 };
+
+//This blockchain needs a real hashing function, proof of work, public and private keys, digitial signatures, saving ledger in a database, distributing the ledger to be a real functioning blockchain
+//I add features intermittenly as I see fit, the main point is to show the applications of blockchain (decentralized gambling, free stock market)
+//need a smart contract to save bets 

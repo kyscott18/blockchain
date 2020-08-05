@@ -11,24 +11,38 @@
 #include <iostream>
 using namespace std;
 
-entry::entry() : from(0), to(1), amount(12), time(1) {
+transaction::transaction() : from(0), to(1), amount(12), time(1) {
     cout << "Creating genesis block" << endl;
 }
     
-entry::entry(int from, int to, int amount, int time) : from(from), to(to), amount(amount), time(time) {}
+transaction::transaction(int from, int to, int amount, int time) : from(from), to(to), amount(amount), time(time) {}
     
-int entry::hash() {
+int transaction::hash() {
     return from + to + amount + time;
 }
     
-void entry::print() {
+void transaction::print() {
     cout << from << to << amount << time << endl;
+}
+
+sc::sc() : from(0), to(1), amount(12), time(1), condition() {
+    cout << "Creating genesis block" << endl;
+}
+
+sc::sc(int from, int to, int amount, int time, int condition) : from(from), to(to), amount(amount), time(time), condition(condition) {}
+
+int sc::hash() {
+    return from + to + amount + time;
+}
+
+void sc::print() {
+    cout << from << to << amount << time << condition << endl;
 }
 
 hashpoint::hashpoint(block* block_ptr) {
     ptr = block_ptr;
     if (block_ptr == nullptr) hash = 0;
-    else hash = ptr->data.hash();
+    else hash = ptr->t.hash();
 }
     
 hashpoint::hashpoint() {
@@ -36,9 +50,9 @@ hashpoint::hashpoint() {
     hash = -1;
 }
 
-block::block(entry in, hashpoint prev) : data(in), prev(hashpoint(prev.ptr)) {}
+block::block(transaction in, hashpoint prev) : t(in), prev(hashpoint(prev.ptr)) {}
     
-block::block() : data(entry()), prev(hashpoint()) {}
+block::block() : t(transaction()), prev(hashpoint()) {}
 
 
 Blockchain::Blockchain() {
@@ -48,7 +62,7 @@ Blockchain::Blockchain() {
         //make end point to the genesis block
 }
     
-void Blockchain::add_node(entry in) {
+void Blockchain::add_node(transaction in) {
     hashpoint next = hashpoint(new block(in, end));
     end = next;
     validate(); 
@@ -57,7 +71,7 @@ void Blockchain::add_node(entry in) {
 void Blockchain::validate(){
     hashpoint move = end;
     while (move.ptr != nullptr) {
-        if (move.hash != move.ptr->data.hash()) {
+        if (move.hash != move.ptr->t.hash()) {
             cout << "not valid" << endl;
             return;
         }
@@ -70,7 +84,7 @@ void Blockchain::validate(){
 void Blockchain::print() {
     hashpoint move = end;
     while (move.ptr != nullptr) {
-        move.ptr->data.print();
+        move.ptr->t.print();
         move = move.ptr->prev;
     }
 }

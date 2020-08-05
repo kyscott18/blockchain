@@ -12,7 +12,7 @@
 #include <stdio.h>
 
 void Ledger::add_block(int from, int to, int amount) {
-    entry in(from, to, amount, time);
+    transaction in(from, to, amount, time);
     ++time;
     blockchain.add_node(in);
     
