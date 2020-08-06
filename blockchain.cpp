@@ -11,11 +11,11 @@
 #include <iostream>
 using namespace std;
 
-transaction::transaction() : from(0), to(1), amount(12), time(1) {
+transaction::transaction() : from(0), to(1), amount(12), time(1), condition(0), status(false)  {
     cout << "Creating genesis block" << endl;
 }
     
-transaction::transaction(int from, int to, int amount, int time) : from(from), to(to), amount(amount), time(time) {}
+transaction::transaction(int from, int to, int amount, int time, int condition) : from(from), to(to), amount(amount), time(time), condition(condition) {}
     
 int transaction::hash() {
     return from + to + amount + time;
@@ -25,18 +25,28 @@ void transaction::print() {
     cout << from << to << amount << time << endl;
 }
 
-sc::sc() : from(0), to(1), amount(12), time(1), condition() {
-    cout << "Creating genesis block" << endl;
+int transaction::get_from() {
+    return from;
 }
 
-sc::sc(int from, int to, int amount, int time, int condition) : from(from), to(to), amount(amount), time(time), condition(condition) {}
-
-int sc::hash() {
-    return from + to + amount + time;
+int transaction::get_to() {
+    return to;
 }
 
-void sc::print() {
-    cout << from << to << amount << time << condition << endl;
+int transaction::get_amount() {
+    return amount;
+}
+
+int transaction::get_condition() {
+    return condition; 
+}
+
+bool transaction::get_status() {
+    return status;
+}
+
+void transaction::set_status(bool status) {
+    status = status;
 }
 
 hashpoint::hashpoint(block* block_ptr) {

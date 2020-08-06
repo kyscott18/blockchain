@@ -15,7 +15,6 @@ int main(int argc, char** argv) {
     //initialize users
     ledger.create(0);
     ledger.create(1);
-    ledger.create(1);
     ledger.create(109);
     //deposit money into users accounts
     ledger.deposit(1, 10);
@@ -24,6 +23,10 @@ int main(int argc, char** argv) {
     ledger.transfer(1, 109, 3);
     //withdrawal money from users accounts
     ledger.withdrawal(109, 7);
+    
+    ledger.write_contract(109, 1, 7, 2);
+    ledger.write_contract(1, 109, 7, 3);
+    ledger.validate_contracts(2); 
     //print the remaining balances
     ledger.print();
 }

@@ -21,7 +21,9 @@ class Ledger {
     Blockchain blockchain;
     unordered_map<int, int> balances;
     
-    void add_block(int from, int to, int amount);
+    void add_block(int from, int to, int amount, int condition);
+    
+    void process_payment(transaction *t); 
     
 public:
     
