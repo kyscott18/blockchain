@@ -11,7 +11,7 @@
 
 
 int main(int argc, char** argv) {
-    Ledger ledger;
+    Ledger ledger = Ledger();
     //initialize users
     ledger.create(0);
     ledger.create(1);
