@@ -125,7 +125,7 @@ public:
             }
             move = move.ptr->prev;
         }
-        cout << "valid" << endl;
+        //cout << "valid" << endl;
     }
         
         

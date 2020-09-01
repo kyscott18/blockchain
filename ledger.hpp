@@ -73,10 +73,16 @@ public:
     
     void create(int num) {
         //if num is taken, print error and return
-        auto hold = balances.find(num);
-        if (hold != balances.end())
+        if (is_member(num))
             cout << "num already in use" << endl;
         else balances[num] = 0;
+    }
+    
+    bool is_member(int num) {
+        auto hold = balances.find(num);
+        if (hold != balances.end())
+            return true;
+        return false;
     }
     
     void print() {
